@@ -7,6 +7,7 @@ import 'react-day-picker/lib/style.css';
 import { FiPower, FiClock } from 'react-icons/fi';
 
 import { parseISO } from 'date-fns/esm';
+import { Link } from 'react-router-dom';
 import {
   Container,
   Header,
@@ -121,13 +122,13 @@ const Dashboard: React.FC = () => {
     return format(selectedDate, 'cccc', { locale: ptBr });
   }, [selectedDate]);
 
-  const morningAppoinitments = useMemo(() => {
+  const morningAppointments = useMemo(() => {
     return appointments.filter((appointment) => {
       return parseISO(appointment.date).getHours() < 12;
     });
   }, [appointments]);
 
-  const afternoonAppoinitments = useMemo(() => {
+  const afternoonAppointments = useMemo(() => {
     return appointments.filter((appointment) => {
       return parseISO(appointment.date).getHours() >= 12;
     });
@@ -150,7 +151,9 @@ const Dashboard: React.FC = () => {
 
             <div>
               <span>Bem-vindo,</span>
-              <strong>{user.name}</strong>
+              <Link to="/profile">
+                <strong>{user.name}</strong>
+              </Link>
             </div>
           </Profile>
 
@@ -192,11 +195,11 @@ const Dashboard: React.FC = () => {
           <Section>
             <strong>Manhã</strong>
 
-            {morningAppoinitments.length === 0 && (
+            {morningAppointments.length === 0 && (
               <p>Nenhum agendamento neste período</p>
             )}
 
-            {morningAppoinitments.map((appointment) => (
+            {morningAppointments.map((appointment) => (
               <Appointment key={appointment.id}>
                 <span>
                   <FiClock />
@@ -218,11 +221,11 @@ const Dashboard: React.FC = () => {
           <Section>
             <strong>Tarde</strong>
 
-            {afternoonAppoinitments.length === 0 && (
+            {afternoonAppointments.length === 0 && (
               <p>Nenhum agendamento neste período</p>
             )}
 
-            {afternoonAppoinitments.map((appointment) => (
+            {afternoonAppointments.map((appointment) => (
               <Appointment key={appointment.id}>
                 <span>
                   <FiClock />
